@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+import sentry_sdk
 import logging.config
 from pathlib import Path
 from dotenv import load_dotenv
@@ -144,6 +145,14 @@ CACHES = {
         'LOCATION' : 'var/tmp/django_cache'
     }
 }
+
+
+sentry_sdk.init(
+    dsn=os.getenv('SENTRY_DSN'),
+    enable_logs=True,
+)
+
+
 
 LOG_LEVEL = os.getenv("LOG_LEVEL")
 

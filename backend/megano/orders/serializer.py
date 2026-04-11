@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from .models import OrderModel
-from products.serializers import ImageSerializer, TagsSerializer, SpecificationsSerializer
-from products.models import Product
+from products.serializers import ImageSerializer, TagsSerializer
+from products.models import ProductModel
 
 
 class ProductFullSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class ProductFullSerializer(serializers.ModelSerializer):
     reviews = serializers.SerializerMethodField()
 
     class Meta:
-        model = Product
+        model = ProductModel
         fields = ['id', 'category', 'price', 'count', 'date', 'title', 'description',
                   'freeDelivery', 'images', 'tags', 'rating', 'reviews'
                   ]

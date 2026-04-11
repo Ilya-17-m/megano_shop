@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from .models import OrderModel
 from .serializer import OrderSerializer, OrderDetailSerializer
-from basket.models import Basket
+from basket.models import BasketModel
 
 
 logger = logging.getLogger(__name__)
@@ -77,7 +77,7 @@ class OrderAPIView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            basket = get_object_or_404(Basket, user=request.user)
+            basket = get_object_or_404(BasketModel, user=request.user)
             basket.delete()
             logger.info('The user has placed an order.')
             return Response(serializer.data, status=200)

@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from .serializers import BasketSerializer
 from .models import BasketModel
-from products.models import Product
+from products.models import ProductModel
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class BasketAPIView(APIView):
             return Response(serializer.data, status=200)
 
         basket = request.session.get('basket', {})
-        products = Product.objects.filter(id__in=basket.keys())
+        products = ProductModel.objects.filter(id__in=basket.keys())
 
         data = []
         for product in products:
@@ -40,7 +40,7 @@ class BasketAPIView(APIView):
 
     def post(self, request) -> Response:
         product_id = request.data.get('id')
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(ProductModel, id=product_id)
         if request.user.is_authenticated:
             basket = BasketModel.objects.create(
                 user=request.user,

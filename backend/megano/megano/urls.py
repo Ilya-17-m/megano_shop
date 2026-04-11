@@ -20,6 +20,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 
+def sentry_debug(request):
+    return 1 / 0
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),
@@ -28,11 +32,10 @@ urlpatterns = [
     path('api/', include('basket.urls')),
     path('api/', include('orders.urls')),
     path('api/', include('catalog.urls')),
+    path('sentry-debug/', sentry_debug)
 ]
-
 
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

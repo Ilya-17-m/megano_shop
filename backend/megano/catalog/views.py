@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from decimal import Decimal
 from django.db.models import Q
 
-from products.models import Product
+from products.models import ProductModel
 from .serializers import ProductShortSerializer
 
 
@@ -41,7 +41,7 @@ class CatalogView(APIView):
         if tags:
             queryset_filters &= Q(tags__id__in=tags)
 
-        queryset = Product.objects.filter(queryset_filters)
+        queryset = ProductModel.objects.filter(queryset_filters)
 
         sort = data.get('sort')
         sort_type = data.get('sortType')

@@ -12,7 +12,10 @@ dependencies = [
     "psycopg (>=3.3.3,<4.0.0)",
     "djangorestframework (>=3.17.1,<4.0.0)",
     "gunicorn (>=25.3.0,<26.0.0)",
-    "python-dotenv (>=1.2.2,<2.0.0)"
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "setuptools (>=82.0.1,<83.0.0)",
+    "sentry-sdk (==2.35.0)",
+    "pillow (>=12.2.0,<13.0.0)"
 ]
 
 

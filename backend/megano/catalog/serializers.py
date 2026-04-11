@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from products.models import Product
+from products.models import ProductModel
 from products.serializers import ImageSerializer, TagsSerializer
 
 
@@ -9,7 +9,7 @@ class ProductShortSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Product
+        model = ProductModel
         fields = [
             'id', 'category', 'price', 'count', 'date', 'title', 'description', 'freeDelivery',
             'images', 'tags', 'rating'
