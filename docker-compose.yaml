@@ -1,0 +1,48 @@
+services:
+  app:
+    container_name: megano
+    build: .
+    command:
+      - "poetry"
+      - "run"
+      - "gunicorn"
+      - "backend.megano_.megano_.wsgi:application"
+    ports:
+      - "8000:8000"
+    restart: always
+
+
+  db:
+    image: postgres:15
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
+    ports:
+      - "5432:5432"
+
+
+  grafana:
+    image: grafana/grafana:9.1.7
+    container_name: grafana_megano
+    ports:
+      - "3000:3000"
+
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki_megano
+    ports:
+      - "3100:3100"
+
+
+  prometheus:
+    image: prom/prometheus:v3.11.0
+    container_name: prometheus_megano
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+    ports:
+      - "9090:9090"

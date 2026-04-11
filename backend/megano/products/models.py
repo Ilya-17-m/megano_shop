@@ -1,0 +1,77 @@
+from django.db import models
+
+
+class ImagesModel(models.Model):
+    """
+        Модель изоображения для аватарки продукта
+    """
+    src = models.ImageField(null=True, blank=True, upload_to='images')
+    alt = models.CharField(max_length=255)
+
+
+class TagsModel(models.Model):
+    """
+        Модель тегов для продукта
+    """
+    name = models.CharField(max_length=255)
+
+
+class SpecificationsModel(models.Model):
+    """
+        Модель особых значений продукта, например: Размер - значение
+    """
+    name = models.CharField(max_length=50)
+    value = models.CharField(max_length=50)
+
+
+class ProductModel(models.Model):
+    """
+        Модель продукта
+    """
+    images = models.ManyToManyField(ImagesModel)
+    title = models.CharField(max_length=255)
+    price = models.SmallIntegerField(default=0)
+    count = models.SmallIntegerField(default=1)
+    category = models.SmallIntegerField(default=0)
+    date = models.CharField(max_length=20)
+    description = models.TextField(null=False, blank=True)
+    fullDescription = models.TextField(null=False, blank=True)
+    freeDelivery = models.BooleanField(default=False)
+    available = models.BooleanField(default=True)
+    tags = models.ManyToManyField(TagsModel)
+    rating = models.SmallIntegerField(default=0)
+    specifications = models.ManyToManyField(SpecificationsModel)
+    popular_version = models.BooleanField(default=False)
+    limited_version = models.BooleanField(default=False)
+    salePrice = models.SmallIntegerField(default=0)
+    dateForm = models.CharField(max_length=50, null=True)
+    dateTo = models.CharField(max_length=50, null=True)
+
+
+class ReviewModel(models.Model):
+    """
+        Модель отзыва пользователей на продукт
+    """
+    product = models.ForeignKey(ProductModel, related_name='reviews', on_delete=models.CASCADE)
+    author = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
+    text = models.TextField(null=False, blank=True)
+    rate = models.IntegerField(default=5)
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class SubcategoriesModel(models.Model):
+    """
+        Подкатегория
+    """
+    title = models.CharField(max_length=255)
+    image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
+
+
+class CategoriesModel(models.Model):
+    """
+        Категория
+    """
+    title = models.CharField(max_length=255)
+    subcategories = models.ManyToManyField(SubcategoriesModel)
+    image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
