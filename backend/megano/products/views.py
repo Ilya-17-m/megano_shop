@@ -6,6 +6,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
 
 from .models import CategoriesModel, TagsModel, ProductModel, ReviewModel
 from .serializers import (
@@ -18,6 +19,7 @@ from .serializers import (
     )
 
 
+@extend_schema(description='banners list')
 @method_decorator(cache_page(60 * 3), name='dispatch')
 class BannersListView(ListAPIView):
     """

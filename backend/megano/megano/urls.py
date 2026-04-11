@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 
 def sentry_debug(request):
@@ -27,11 +28,18 @@ def sentry_debug(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),
+    path('metrics/', include('django_prometheus.urls')),
     path('api/', include('products.urls')),
     path('api/', include('accounts.urls')),
     path('api/', include('basket.urls')),
     path('api/', include('orders.urls')),
     path('api/', include('catalog.urls')),
+
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema')),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema')),
+
     path('sentry-debug/', sentry_debug)
 ]
 
