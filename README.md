@@ -16,8 +16,7 @@
 + Django Rest Framework
 + Poetry
 + Gunicorn
-+ Docker
-+ Docker Compose
++ Docker / Docker Compose
 + Caches
 + Logging
 + PostgreSQL
@@ -25,7 +24,6 @@
 + Sentry
 + Prometheus
 + Loki
-
 
 
 ## Разработка:
@@ -45,6 +43,15 @@
 ### Запуск сервера:
 #### Чтобы запустить сервер для разработки, выполните команду:
 ``poetry run gunicorn backend.megano.megano.wsgi:application``
+
+
+### Чтобы увидеть документацию проекта, выполните предыдущую команду в терминале и перейдите по ссылке:
+
+#### Документация в формате swagger:
+``http://127.0.0.1:8000/swagger``
+
+#### Документация в формате redoc:
+``http://127.0.0.1:8000/redoc``
 
 
 ### Команда проекта:
