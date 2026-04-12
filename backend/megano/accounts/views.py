@@ -23,10 +23,11 @@ class UserLogoutAPIView(APIView):
     """
     permission_classes = [IsAuthenticated]
 
-
     def post(self, request) -> Response:
+
         logout(request)
         logger.info('The user is logged out.')
+
         return Response({'message':'Вы вышли из системы!'})
 
 
@@ -62,96 +63,66 @@ class UserLoginView(APIView):
     """
         View для входа пользователя в систему
     """
+
     def post(self, request) -> Response:
-        data = request.data
+        data = json.loads(request.body)
 
-        username = None
-        password = None
-
-        if len(data) == 1:
-            try:
-                raw_key = list(data.keys())[0]
-                parsed = json.loads(raw_key)
-
-                username = parsed.get('username')
-                password = parsed.get('password')
-            except (json.JSONDecodeError, IndexError):
-                pass
-        else:
-            username = data.get('username')
-            password = data.get('password')
-
-        if not username or not password:
-            return Response(
-                    {'error': 'Username or password not found'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+        username = data.get('username')
+        password = data.get('password')
 
         user = authenticate(username=username, password=password)
 
-        if user:
-            login(request, user)
-            logger.info('The user is logged in.')
-            return Response(status=status.HTTP_200_OK)
+        if user is None:
+            logger.info('User not found')
+            return Response({
+                'message': 'Invalid credentials'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'error': 'Invalid credentials'}, status=400)
+        logger.info('The user is logged in')
+        login(request, user)
+
+        return Response({
+            'message': 'Ok'
+        }, status=status.HTTP_200_OK)
 
 
 class UserRegisterView(APIView):
 
-    """
-        View для регистрации рользователя
-    """
-    def post(self, request) -> Response:
-        data = request.data
+    def post(self, request):
+        data = json.loads(request.body)
 
-        name = None
-        username = None
-        password = None
+        name = data.get("name")
+        username = data.get("username")
+        password = data.get("password")
 
-        if len(data) == 1:
-            try:
-                raw_key = list(data.keys())[0]
-                parsed = json.loads(raw_key)
-
-                name = parsed.get('name')
-                username = parsed.get('username')
-                password = parsed.get('password')
-            except (json.JSONDecodeError, IndexError):
-                pass
-        else:
-            name = data.get('name')
-            username = data.get('username')
-            password = data.get('password')
-
-        if not name or not username or not password:
+        if not all([name, username, password]):
             return Response(
-                    {'error': 'name, username and password are required'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+                {"error": "name, username and password are required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if User.objects.filter(username=username).exists():
             return Response(
-                    {'error': 'User already exists'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+                {"error": "User already exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         user = User.objects.create_user(
-                username=username,
-                password=password,
-                first_name=name
-            )
+            username=username,
+            password=password,
+            first_name=name
+        )
 
         ProfileModel.objects.create(
-                user=request.user,
-                fullName=username,
-                email='',
-                avatar='',
-                phone=''
-            )
+            user=user,
+            fullName=name,
+            email='',
+            avatar=2,
+            phone=''
+        )
 
         login(request, user)
-        logger.info('The user has registered')
+
         return Response(status=status.HTTP_201_CREATED)
 
 

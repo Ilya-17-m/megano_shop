@@ -28,17 +28,17 @@ def sentry_debug(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),
-    path('metrics/', include('django_prometheus.urls')),
-    path('api/', include('products.urls')),
-    path('api/', include('accounts.urls')),
-    path('api/', include('basket.urls')),
-    path('api/', include('orders.urls')),
-    path('api/', include('catalog.urls')),
+    path('metrics/', include('django_prometheus.urls'), name='prometheus'),
+    path('api/', include('products.urls'), name='product'),
+    path('api/', include('accounts.urls'), name='account'),
+    path('api/', include('basket.urls'), name='basket'),
+    path('api/', include('orders.urls'), name='order'),
+    path('api/', include('catalog.urls'), name='catalog'),
 
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
 
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema')),
-    path('redoc/', SpectacularRedocView.as_view(url_name='schema')),
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
     path('sentry-debug/', sentry_debug)
 ]
