@@ -10,6 +10,10 @@ services:
     ports:
       - "8000:8000"
     restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: httl://localhost:3100/loki/api/v1/push
 
 
   db:
