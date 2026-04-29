@@ -9,10 +9,6 @@ class ImageModel(models.Model):
     src = models.ImageField(upload_to='avatar')
     alt = models.CharField(max_length=255)
 
-    class Meta:
-        name = 'accounts_avatar'
-        ordering = ['-id',]
-
 
 class ProfileModel(models.Model):
     """
@@ -23,7 +19,3 @@ class ProfileModel(models.Model):
     email = models.CharField(max_length=50, null=True)
     phone = models.CharField(max_length=50, null=True)
     avatar = models.OneToOneField(ImageModel, on_delete=models.CASCADE, null=True)
-
-    class Meta:
-        name = 'accounts_profile'
-        ordering = ['-id',]

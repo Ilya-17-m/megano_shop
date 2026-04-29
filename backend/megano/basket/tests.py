@@ -1,3 +1,7 @@
-from django.test import TestCase
+import pytest
+from basket.models import BasketModel
 
-# Create your tests here.
+
+@pytest.mark.django_db
+def test_basket():
+    pass

@@ -8,19 +8,12 @@ class ImagesModel(models.Model):
     src = models.ImageField(null=True, blank=True, upload_to='images')
     alt = models.CharField(max_length=255)
 
-    class Meta:
-        name = 'product_image'
-        ordering = ['-id',]
-
 
 class TagsModel(models.Model):
     """
         Model tags for product
     """
     name = models.CharField(max_length=255)
-
-    class Meta:
-        name = 'product_tags'
 
 
 class SpecificationsModel(models.Model):
@@ -29,10 +22,6 @@ class SpecificationsModel(models.Model):
     """
     name = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
-
-    class Meta:
-        name = 'product_specifications'
-        ordering = ['-id',]
 
 
 class ProductModel(models.Model):
@@ -58,10 +47,6 @@ class ProductModel(models.Model):
     dateForm = models.CharField(max_length=50, null=True)
     dateTo = models.CharField(max_length=50, null=True)
 
-    class Meta:
-        name = 'product'
-        ordering = ['-id',]
-
 
 class ReviewModel(models.Model):
     """
@@ -78,10 +63,6 @@ class ReviewModel(models.Model):
     rate = models.IntegerField(default=5)
     date = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        name = 'product_review'
-        ordering = ['-id',]
-
 
 class SubcategoriesModel(models.Model):
     """
@@ -89,10 +70,6 @@ class SubcategoriesModel(models.Model):
     """
     title = models.CharField(max_length=255)
     image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
-
-    class Meta:
-        name = 'product_subcategories'
-        ordering = ['-id',]
 
 
 class CategoriesModel(models.Model):
@@ -102,7 +79,3 @@ class CategoriesModel(models.Model):
     title = models.CharField(max_length=255)
     subcategories = models.ManyToManyField(SubcategoriesModel)
     image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
-
-    class Meta:
-        name = 'product_categories'
-        ordering = ['-id',]

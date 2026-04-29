@@ -5,8 +5,8 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 
-def sentry_debug(request):
-    return 1 / 0
+# def sentry_debug(request):
+#     return 1 / 0
 
 
 urlpatterns = [
@@ -24,7 +24,7 @@ urlpatterns = [
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
-    path('sentry-debug/', sentry_debug),
+    # path('sentry-debug/', sentry_debug),
 ]
 
 

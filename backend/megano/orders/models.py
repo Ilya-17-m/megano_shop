@@ -19,7 +19,3 @@ class OrderModel(models.Model):
     status = models.CharField(max_length=25)
     deliveryType = models.CharField(max_length=25)
     paymentType = models.CharField(max_length=25)
-
-    class Meta:
-        name = 'order'
-        ordering = ['-id',]

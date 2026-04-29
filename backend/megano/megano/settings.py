@@ -156,12 +156,12 @@ CACHES = {
     }
 }
 
-SENTRY_DSN = os.getenv('SENTRY_DSN')
-
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    enable_logs=True,
-)
+# SENTRY_DSN = os.getenv('SENTRY_DSN')
+#
+# sentry_sdk.init(
+#     dsn=SENTRY_DSN,
+#     enable_logs=True,
+# )
 
 
 
@@ -182,21 +182,21 @@ logging.config.dictConfig({
             'class' : 'logging.StreamHandler',
             'formatter' : 'console',
         },
-        'file': {
-            '()': 'CustomFileHandler',
-            'formatter': 'console',
-            'level': 'ERROR',
-            'file_name': 'error_file.log',
-            'mode': 'a'
-        }
-    },
+    #     'file': {
+    #         '()': 'megano.megano.custom_handler.CustomFileHandler',
+    #         'formatter': 'console',
+    #         'level': 'ERROR',
+    #         'file_name': 'error_file.log',
+    #         'mode': 'a'
+    #     }
+     },
 
     'loggers' : {
         '' : {
             'level': 'INFO',
             'handlers': [
                 'console',
-                'file',
+                # 'file',
             ]
         },
     },
