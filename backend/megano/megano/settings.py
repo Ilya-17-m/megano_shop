@@ -124,6 +124,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 # Internationalization
@@ -154,9 +156,10 @@ CACHES = {
     }
 }
 
+SENTRY_DSN = os.getenv('SENTRY_DSN')
 
 sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN'),
+    dsn=SENTRY_DSN,
     enable_logs=True,
 )
 
@@ -179,12 +182,22 @@ logging.config.dictConfig({
             'class' : 'logging.StreamHandler',
             'formatter' : 'console',
         },
+        'file': {
+            '()': 'CustomFileHandler',
+            'formatter': 'console',
+            'level': 'ERROR',
+            'file_name': 'error_file.log',
+            'mode': 'a'
+        }
     },
 
     'loggers' : {
         '' : {
             'level': 'INFO',
-            'handlers': ['console', ]
+            'handlers': [
+                'console',
+                'file',
+            ]
         },
     },
 })
