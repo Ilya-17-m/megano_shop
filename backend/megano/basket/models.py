@@ -10,3 +10,7 @@ class BasketModel(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'baskets'
+        ordering = ['-id',]
