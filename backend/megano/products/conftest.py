@@ -5,7 +5,10 @@ from products.models import (
     ProductModel,
     SpecificationsModel,
     TagsModel,
-    ReviewModel
+    ReviewModel,
+    SubcategoriesModel,
+    CategoriesModel,
+    ImagesModel
 )
 
 
@@ -15,34 +18,26 @@ def client():
 
 
 @pytest.fixture
-def product(db):
-    specifications = SpecificationsModel.objects.create(
+def image(db):
+    return ImagesModel.objects.create(
+        id=1,
+        alt='image',
+    )
+
+
+@pytest.fixture
+def specification(db):
+    return SpecificationsModel.objects.create(
         id=1,
         name='size',
         value='16x9',
-    )
-    tags = TagsModel.objects.create(
-        name='tech',
-    )
-
-    return ProductModel.objects.create(
-        title='laptop',
-        price=56000,
-        count=1,
-        date='21.04.2026',
-        description='great laptop',
-        fullDescription='I like this laptop',
-        freeDelivery=False,
-        available=True,
-        rating=4,
-        specifications=specifications,
-        tags=tags,
     )
 
 
 @pytest.fixture
 def tag(db):
     return TagsModel.objects.create(
+        id=1,
         name='tech',
     )
 
@@ -55,5 +50,57 @@ def review(db):
         email='user@gmail.ru',
         text='I like this product',
         rate=4,
-        product=1,
     )
+
+@pytest.fixture
+def subcategories(db):
+    return SubcategoriesModel.objects.create(
+        id=1,
+        title='laptop',
+    )
+
+
+@pytest.fixture
+def categories(db):
+    return CategoriesModel.objects.create(
+        id=1,
+        title='tech',
+    )
+
+
+@pytest.fixture
+def product(db):
+    return ProductModel.objects.create(
+        title='MacBook',
+        price=2000,
+        count=1,
+        category=0,
+        date='24.04.2026',
+        description='great',
+        fullDescription='I like this product',
+        freeDelivery=True,
+        available=True,
+        rating=3,
+        popular_version=True,
+        limited_version=True,
+        salePrice=0,
+        dateForm='24.04.2026',
+        dateTo='24.04.2026',
+    )
+
+
+@pytest.fixture
+def product_rel_with_tables(product, tag, specification, image):
+    product.tags.set([tag])
+    product.specifications.set([specification])
+    product.images.set([image])
+
+
+@pytest.fixture
+def categories_rel_with_tables(categories, subcategories):
+    categories.subcategories.set([subcategories])
+
+
+@pytest.fixture
+def review_rel_with_taels(review, product):
+    review.product.set([product])

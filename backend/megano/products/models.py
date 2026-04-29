@@ -8,12 +8,20 @@ class ImagesModel(models.Model):
     src = models.ImageField(null=True, blank=True, upload_to='images')
     alt = models.CharField(max_length=255)
 
+    class Meta:
+        db_table = 'product_images'
+        ordering = ['-id', ]
+
 
 class TagsModel(models.Model):
     """
         Model tags for product
     """
     name = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'product_tags'
+        ordering = ['-id',]
 
 
 class SpecificationsModel(models.Model):
@@ -23,6 +31,10 @@ class SpecificationsModel(models.Model):
     name = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
 
+    class Meta:
+        db_table = 'product_specifications'
+        ordering = ['-id',]
+
 
 class ProductModel(models.Model):
     """
@@ -30,7 +42,7 @@ class ProductModel(models.Model):
     """
     images = models.ManyToManyField(ImagesModel)
     title = models.CharField(max_length=255)
-    price = models.SmallIntegerField(default=0)
+    price = models.BigIntegerField(default=0)
     count = models.SmallIntegerField(default=1)
     category = models.SmallIntegerField(default=0)
     date = models.CharField(max_length=20)
@@ -46,6 +58,10 @@ class ProductModel(models.Model):
     salePrice = models.SmallIntegerField(default=0)
     dateForm = models.CharField(max_length=50, null=True)
     dateTo = models.CharField(max_length=50, null=True)
+
+    class Meta:
+        db_table = 'products'
+        ordering = ['-id',]
 
 
 class ReviewModel(models.Model):
@@ -63,6 +79,10 @@ class ReviewModel(models.Model):
     rate = models.IntegerField(default=5)
     date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = 'product_review'
+        ordering = ['-id',]
+
 
 class SubcategoriesModel(models.Model):
     """
@@ -70,6 +90,10 @@ class SubcategoriesModel(models.Model):
     """
     title = models.CharField(max_length=255)
     image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'product_subcategories'
+        ordering = ['-id',]
 
 
 class CategoriesModel(models.Model):
@@ -79,3 +103,7 @@ class CategoriesModel(models.Model):
     title = models.CharField(max_length=255)
     subcategories = models.ManyToManyField(SubcategoriesModel)
     image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'product_categories'
+        ordering = ['-id',]
