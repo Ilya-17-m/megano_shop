@@ -6,7 +6,11 @@ from products.models import ProductModel
 
 class BasketModel(models.Model):
     """
-        Модель корзины пользователя
+        Model user basket
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+
+    class Meta:
+        name = 'basket'
+        ordering = ['-id',]

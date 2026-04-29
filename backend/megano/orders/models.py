@@ -7,7 +7,7 @@ from accounts.models import ProfileModel
 
 class OrderModel(models.Model):
     """
-        Модель заказов пользователя
+        Model user orders
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey(ProfileModel, on_delete=models.CASCADE, related_name='profile')
@@ -20,5 +20,6 @@ class OrderModel(models.Model):
     deliveryType = models.CharField(max_length=25)
     paymentType = models.CharField(max_length=25)
 
-
-
+    class Meta:
+        name = 'order'
+        ordering = ['-id',]

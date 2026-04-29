@@ -3,25 +3,36 @@ from django.db import models
 
 class ImagesModel(models.Model):
     """
-        Модель изоображения для аватарки продукта
+        Model for avatar on product
     """
     src = models.ImageField(null=True, blank=True, upload_to='images')
     alt = models.CharField(max_length=255)
 
+    class Meta:
+        name = 'product_image'
+        ordering = ['-id',]
+
 
 class TagsModel(models.Model):
     """
-        Модель тегов для продукта
+        Model tags for product
     """
     name = models.CharField(max_length=255)
+
+    class Meta:
+        name = 'product_tags'
 
 
 class SpecificationsModel(models.Model):
     """
-        Модель особых значений продукта, например: Размер - значение
+        Model special values product
     """
     name = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
+
+    class Meta:
+        name = 'product_specifications'
+        ordering = ['-id',]
 
 
 class ProductModel(models.Model):
@@ -47,31 +58,51 @@ class ProductModel(models.Model):
     dateForm = models.CharField(max_length=50, null=True)
     dateTo = models.CharField(max_length=50, null=True)
 
+    class Meta:
+        name = 'product'
+        ordering = ['-id',]
+
 
 class ReviewModel(models.Model):
     """
-        Модель отзыва пользователей на продукт
+        Model user review on product
     """
-    product = models.ForeignKey(ProductModel, related_name='reviews', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        ProductModel,
+        related_name='reviews',
+        on_delete=models.CASCADE
+    )
     author = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
     text = models.TextField(null=False, blank=True)
     rate = models.IntegerField(default=5)
     date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        name = 'product_review'
+        ordering = ['-id',]
+
 
 class SubcategoriesModel(models.Model):
     """
-        Подкатегория
+        Product subcategories
     """
     title = models.CharField(max_length=255)
     image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
+
+    class Meta:
+        name = 'product_subcategories'
+        ordering = ['-id',]
 
 
 class CategoriesModel(models.Model):
     """
-        Категория
+        Product categories
     """
     title = models.CharField(max_length=255)
     subcategories = models.ManyToManyField(SubcategoriesModel)
     image = models.ForeignKey(ImagesModel, on_delete=models.CASCADE)
+
+    class Meta:
+        name = 'product_categories'
+        ordering = ['-id',]
