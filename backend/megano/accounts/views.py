@@ -32,31 +32,43 @@ class UserLogoutAPIView(APIView):
 
 
 class ProfileView(APIView):
-    permission_classes = [IsAuthenticated]
     """
         View для перехода в профиль пользователя
     """
+    permission_classes = [IsAuthenticated]
 
     def post(self, request) -> Response:
 
         profile = get_object_or_404(ProfileModel, user=request.user)
-        serializer = ProfileSerializer(
-            profile,
-            data=request.data,
-            partial=True,
-        )
+        if profile:
+            serializer = ProfileSerializer(
+                profile,
+                data=request.data,
+                partial=True,
+            )
 
-        if serializer.is_valid():
-            serializer.save()
-            logger.info('The user changed the profile information.')
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.is_valid():
+                serializer.save()
+                logger.info('The user changed the profile information.')
+                return Response(serializer.data)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Something went wrong...'})
 
 
     def get(self, request) -> Response:
         profile = get_object_or_404(ProfileModel, user=request.user)
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data)
+
+        if profile:
+            serializer = ProfileSerializer(profile)
+
+            if serializer.is_valid():
+                return Response(serializer.data)
+
+            return Response({'message': 'Something went wrong...'})
+
+        return Response({'message': 'Something went wrong...'})
 
 
 class UserLoginView(APIView):

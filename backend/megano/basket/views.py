@@ -21,8 +21,13 @@ class BasketAPIView(APIView):
             basket = BasketModel.objects.defer('user').filter(user=request.user)
             serializer = BasketSerializer(basket, many=True)
 
-            logger.info('The user opened the shopping cart.')
-            return Response(serializer.data, status=200)
+            if serializer.is_valid():
+                logger.info('The user opened the shopping cart.')
+
+                return Response(serializer.data, status=200)
+
+            else:
+                return Response({'message': 'Something went wrong...'})
 
         basket = request.session.get('basket', {})
         products = ProductModel.objects.filter(id__in=basket.keys())
@@ -47,8 +52,13 @@ class BasketAPIView(APIView):
                 product=product
             )
             serializer = BasketSerializer(basket)
-            logger.info('The user added the product to the cart.')
-            return Response(serializer.data, status=201)
+
+            if serializer.is_valid():
+                logger.info('The user added the product to the cart.')
+                return Response(serializer.data, status=201)
+
+            else:
+                return Response({'message': 'Something went wrong...'})
 
         basket = request.session.get('basket', {})
         basket[product_id] = basket.get(product_id, 0) + 1
@@ -64,9 +74,16 @@ class BasketAPIView(APIView):
                 user=request.user,
                 product=product
             )
-            basket.delete()
-            logger.info('The user deleted the product from the shopping cart.')
-            return Response(status=status.HTTP_204_NO_CONTENT)
+
+            if basket:
+                basket.delete()
+                logger.info('The user deleted the product from the shopping cart.')
+
+                return Response(status=status.HTTP_204_NO_CONTENT)
+
+            else:
+                return Response({'message': 'Something went wrong...'})
+
         basket = request.session.get('basket', {})
         if product in basket:
             del basket[product]

@@ -94,7 +94,7 @@ class ReviewCreateAPIView(APIView):
     """
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, pk) -> Response:
+    def post(self, request, pk: int) -> Response:
         product = get_object_or_404(ProductModel, id=pk)
 
         review = ReviewModel.objects.create(
@@ -106,7 +106,10 @@ class ReviewCreateAPIView(APIView):
         )
 
         serializer = ReviewSerializer(review)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response({'error': 'Ivalid values'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class SalesListView(APIView):

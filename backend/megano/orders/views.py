@@ -23,7 +23,12 @@ class OrdersAPIView(APIView):
         if request.user.is_authenticated:
             order = OrderModel.objects.defer('user').filter(user=request.user)
             serializer = OrderSerializer(order, many=True)
-            return Response(serializer.data ,status=200)
+
+            if serializer.is_valid():
+                return Response(serializer.data ,status=200)
+
+            else:
+                return Response({'message': 'Something went wrong...'})
 
         logger.warning('User is not authenticated!')
         return Response({'error' : 'User is not authenticated!'}, 400)
@@ -78,15 +83,27 @@ class OrderAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             basket = get_object_or_404(BasketModel, user=request.user)
-            basket.delete()
-            logger.info('The user has placed an order.')
-            return Response(serializer.data, status=200)
+
+            if basket:
+
+                basket.delete()
+                logger.info('The user has placed an order.')
+
+                return Response(serializer.data, status=200)
+
+            else:
+                return Response({'message': 'Something went wrong...'})
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
     def get(self, request, pk) -> Response:
         order =  get_object_or_404(OrderModel, pk=pk, user=request.user)
         serializer = OrderSerializer(order)
+
+        if serializer.is_valid():
+            return Response({'message': 'Something went wrong...'})
+
         return Response(serializer.data)
 
 

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 
 from products.models import ProductModel
@@ -9,10 +8,9 @@ class OrderModel(models.Model):
     """
         Model user orders
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey(ProfileModel, on_delete=models.CASCADE, related_name='profile')
-    createdAt = models.CharField(max_length=25)
     products = models.ManyToManyField(ProductModel)
+    createdAt = models.CharField(max_length=25)
     address = models.CharField(max_length=250)
     city = models.CharField(max_length=150)
     totalCost = models.SmallIntegerField(default=0)
