@@ -21,13 +21,7 @@ class BasketAPIView(APIView):
             basket = BasketModel.objects.defer('user').filter(user=request.user)
             serializer = BasketSerializer(basket, many=True)
 
-            if serializer.is_valid():
-                logger.info('The user opened the shopping cart.')
-
-                return Response(serializer.data, status=200)
-
-            else:
-                return Response({'message': 'Something went wrong...'})
+            return Response(serializer.data, status=200)
 
         basket = request.session.get('basket', {})
         products = ProductModel.objects.filter(id__in=basket.keys())
