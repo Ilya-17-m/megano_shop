@@ -125,5 +125,5 @@ class SalesListView(APIView):
         return Response({
             'items': serializer.data,
             'currentPage': page,
-            'lastPage': 1,
+            'lastPage': 2,
         })
