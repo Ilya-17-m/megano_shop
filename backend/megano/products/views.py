@@ -109,7 +109,7 @@ class ReviewCreateAPIView(APIView):
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response({'error': 'Ivalid values'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'error': 'Invalid values'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class SalesListView(APIView):
