@@ -21,3 +21,9 @@ class OrderModel(models.Model):
     class Meta:
         db_table = 'orders'
         ordering = ['-id',]
+
+    def __str__(self):
+        return self.address
+
+    def __repr__(self):
+        return f'<Order: address={self.address}, city={self.city}, status={self.status}>'

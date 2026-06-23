@@ -12,6 +12,12 @@ class ImagesModel(models.Model):
         db_table = 'product_images'
         ordering = ['-id', ]
 
+    def __str__(self):
+        return self.alt
+
+    def __repr__(self):
+        return f'<Image: alt={self.alt}>'
+
 
 class TagsModel(models.Model):
     """
@@ -22,6 +28,12 @@ class TagsModel(models.Model):
     class Meta:
         db_table = 'product_tags'
         ordering = ['-id',]
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f'<Tag: name={self.name}>'
 
 
 class SpecificationsModel(models.Model):
@@ -35,6 +47,12 @@ class SpecificationsModel(models.Model):
         db_table = 'product_specifications'
         ordering = ['-id',]
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f'<Specifications: name={self.name}, value={self.value}>'
+
 
 class ProductModel(models.Model):
     """
@@ -44,7 +62,7 @@ class ProductModel(models.Model):
     title = models.CharField(max_length=255)
     price = models.BigIntegerField(default=0)
     count = models.SmallIntegerField(default=1)
-    category = models.SmallIntegerField(default=0)
+    category = models.ManyToManyField('CategoriesModel')
     date = models.CharField(max_length=20)
     description = models.TextField(null=False, blank=True)
     fullDescription = models.TextField(null=False, blank=True)
@@ -63,6 +81,12 @@ class ProductModel(models.Model):
         db_table = 'products'
         ordering = ['-id',]
 
+    def __str__(self):
+        return self.title
+
+    def __repr__(self):
+        return f'Product: {self.title}, price={self.price}'
+
 
 class ReviewModel(models.Model):
     """
@@ -74,7 +98,7 @@ class ReviewModel(models.Model):
         on_delete=models.CASCADE
     )
     author = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)
     text = models.TextField(null=False, blank=True)
     rate = models.IntegerField(default=5)
     date = models.DateTimeField(auto_now_add=True)
@@ -82,6 +106,12 @@ class ReviewModel(models.Model):
     class Meta:
         db_table = 'product_review'
         ordering = ['-id',]
+
+    def __str__(self):
+        return self.author
+
+    def __repr__(self):
+        return f'<Review: author={self.author}, email={self.email}, text={self.text}, rate={self.rate}>'
 
 
 class SubcategoriesModel(models.Model):
@@ -95,6 +125,12 @@ class SubcategoriesModel(models.Model):
         db_table = 'product_subcategories'
         ordering = ['-id',]
 
+    def __str__(self):
+        return {self.title}
+
+    def __repr__(self):
+        return f'<Subcategories: title={self.title}>'
+
 
 class CategoriesModel(models.Model):
     """
@@ -107,3 +143,9 @@ class CategoriesModel(models.Model):
     class Meta:
         db_table = 'product_categories'
         ordering = ['-id',]
+
+    def __str__(self):
+        return {self.title}
+
+    def __repr__(self):
+        return f'<Categories: name={self.title}>'
