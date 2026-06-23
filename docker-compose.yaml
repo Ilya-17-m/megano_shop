@@ -7,7 +7,7 @@ services:
       - "poetry"
       - "run"
       - "gunicorn"
-      - "backend.megano_.megano_.wsgi:application"
+      - "backend.megano.megano.wsgi:application"
     ports:
       - "8000:8000"
     restart: always
