@@ -74,8 +74,8 @@ class ProductModel(models.Model):
     popular_version = models.BooleanField(default=False)
     limited_version = models.BooleanField(default=False)
     salePrice = models.SmallIntegerField(default=0)
-    dateForm = models.CharField(max_length=50, null=True)
-    dateTo = models.CharField(max_length=50, null=True)
+    dateForm = models.DateTimeField(auto_now_add=True)
+    dateTo = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'products'
